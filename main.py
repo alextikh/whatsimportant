@@ -7,6 +7,7 @@ from re import compile
 filename = 'chat.txt'
 cooldown_period = timedelta(hours=1)
 num_top_members = 5
+username = 'ERIC'
 
 
 def parse_message(message):
@@ -47,7 +48,26 @@ def split_conversations(messages):
     return conversations
 
 
-def find_top_members(messages):
+def find_top_members(conversations):
+    members = {}
+    for index, conversation in enumerate(conversations):
+        for msg in conversation:
+            msg_data = parse_message(msg)
+            sender = msg_data['sender']
+            if sender in members:
+                if 'conversation{}'.format(index) not in members[sender]:
+                    members[sender] += ['conversation{}'.format(index)]
+            else:
+                members[sender] = ['conversation{}'.format(index)]
+    members = sorted(members.items(), key=lambda x: len(x[1]), reverse=True)
+    if len(members) <= num_top_members:
+        return members
+    else:
+        return members
+
+
+
+def find_top_members1(messages):
     members = {}
     for msg in messages:
         msg_data = parse_message(msg)
@@ -59,9 +79,10 @@ def find_top_members(messages):
                 members[sender] = 1
     members = sorted(members.items(), key=itemgetter(1), reverse=True)
     if len(members) <= num_top_members:
-        return dict(members)
+        return members
     else:
-        return dict(members[:num_top_members])
+        return members
+
 
 
 def log(conversations):
@@ -75,7 +96,7 @@ def log(conversations):
     # create new logs
 
     logfilename_template = 'conversation{}.txt'
-    for (index, conversation) in enumerate(conversations):
+    for index, conversation in enumerate(conversations):
         logfilename = logfilename_template.format(index)
         with open(logfilename, 'w', encoding='utf-8') as logfile:
             logfile.writelines(conversation)
@@ -84,9 +105,11 @@ def log(conversations):
 def main():
     with open(filename, 'r', encoding='utf8') as chatfile:
         messages = chatfile.readlines()
-        print(find_top_members(messages))
-        # conversations = split_conversations(messages)
-        # log(conversations)
+        conversations = split_conversations(messages)
+        log(conversations)
+        # print(find_top_members1(messages))
+        # print([(i[0], len(i[1])) for i in find_top_members(conversations)])
+
 
 
 if __name__ == '__main__':
