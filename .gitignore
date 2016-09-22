@@ -1,8 +1,11 @@
 # ignore pycharm configurations
-.idea
+backend/.idea
+
+# ignore python bytecode
+backend/__pycache__
 
 # ignore log files of parsed conversations
-conversation*.txt
+backend/conversations
 
 # ignore Emacs generated files
-*~
+backend/*~
