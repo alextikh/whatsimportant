@@ -8,4 +8,4 @@ backend/__pycache__
 backend/conversations
 
 # ignore Emacs generated files
-backend/*~
+~

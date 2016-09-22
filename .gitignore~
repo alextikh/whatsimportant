@@ -1,5 +1,0 @@
-# ignore pycharm configurations
-.idea
-
-# ignore log files of parsed conversations
-conversation*.txt
