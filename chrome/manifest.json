@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "Smart Notefications",
+  "description": "This extension will send you only the intresting messages",
+  "version": "1.0",
+
+  "browser_action": {
+   "default_icon": "icon.png",
+   "default_popup": "popup.html"
+  },
+  "permissions": [
+   "activeTab"
+   ]
+}
